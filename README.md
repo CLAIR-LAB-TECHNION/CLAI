@@ -6,8 +6,8 @@ Technion Collaborative AI (Spring 2024)
   <br>
   <br>
   <br>
-  <br>
-  <img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/CLAI_logo.png?raw=true" height="600" width="400">
+  
+  <img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/CLAI_logo.png?raw=true">
 </h1>
   <p align="center">
     <a href="mailto:itaysegev@campus.technion.ac.il">Itay Segev</a> •
