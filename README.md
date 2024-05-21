@@ -4,19 +4,19 @@
   <br>
 Technion Collaborative AI (Spring 2024)
   <br>
-  <img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/CLAI_logo.png" height="200">
+  <img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/CLAI_logo.png?raw=true" height="200">
 </h1>
   <p align="center">
-    <a href="Itay Segev ([itaysegev@technion.ac.il](mailto:itaysegev@technion.ac.il))">Itay Segev</a> •
-    <a href="([sarahk@cs.technion.ac.il](mailto:sarahk@cs.technion.ac.il))">Sarah Keren</a>
-    <a href="([eandrey@campus.technion.ac.il](mailto:eandrey@campus.technion.ac.il))">Andrey Elashkin</a>
+    <a href="itaysegev@technion.ac.il">Itay Segev</a> •
+    <a href="sarahk@cs.technion.ac.il">Sarah Keren</a> •
+    <a href="eandrey@campus.technion.ac.il">Andrey Elashkin</a>
   </p>
 
-Jupyter Notebook tutorials for the Technion's CS 236203 course "Collaborative AI"
+Jupyter Notebook tutorials for the Technion's CS 236203 course Collaborative AI
 
 <h4 align="center">
     <a href="https://colab.research.google.com/github/CLAIR-LAB-TECHNION/CLAI"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-    <a href="https://nbviewer.jupyter.org/github/CLAIR-LAB-TECHNION/CLAI/tree/main/"><img src="https://raw.githubusercontent.com/jupyter/design/master/logos/Badges/nbviewer_badge.png" alt="Open In NBViewer"/></a>
+    <a href="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/nbviewer_badge.svg" alt="Open In NBViewer"/></a>
     
 
 </h4>
@@ -57,7 +57,7 @@ You can view the tutorials online or download and run locally.
 
 Jupyter Nbviewer:
 
-[![nbviewer](https://raw.githubusercontent.com/jupyter/design/master/logos/Badges/nbviewer_badge.png)](https://nbviewer.jupyter.org/github/CLAIR-LAB-TECHNION/CLAI/tree/main/)
+[![nbviewer](https://raw.githubusercontent.com/taldatech/ee046211-deep-learning/main/assets/nbviewer_badge.svg)
 
 
 Press on the "Open in Colab" button below to use Google Colab:
@@ -87,7 +87,7 @@ In Windows open `Anaconda Prompt` from the start menu, in Mac/Linux open the ter
 ### Libraries to Install
 
 |Library         | Command to Run |
-|----------------|---------|
+|------------------|---------|
 |`Jupyter Notebook`|  `conda install -c conda-forge notebook`|
 |`numpy`|  `conda install -c conda-forge numpy`|
 |`matplotlib`|  `conda install -c conda-forge matplotlib`|
@@ -102,4 +102,4 @@ In Windows open `Anaconda Prompt` from the start menu, in Mac/Linux open the ter
 
 5. To open the notebooks, open Ananconda Navigator or run `jupyter notebook` in the terminal (or `Anaconda Prompt` in Windows) while the `deep_learn` environment is activated.
 
-<img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/CLAI_house_image.png" height="200">
+<img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/CLAI_house_image.png?raw=true">
