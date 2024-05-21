@@ -6,7 +6,6 @@ Technion Collaborative AI (Spring 2024)
   <br>
   <br>
   <br>
-  
   <img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/CLAI_logo.png?raw=true">
 </h1>
   <p align="center">
@@ -102,5 +101,7 @@ In Windows open `Anaconda Prompt` from the start menu, in Mac/Linux open the ter
 
 
 5. To open the notebooks, open Ananconda Navigator or run `jupyter notebook` in the terminal (or `Anaconda Prompt` in Windows) while the `deep_learn` environment is activated.
+<br>
+<br>
 
 <img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/CLAI_house_image.png?raw=true">
