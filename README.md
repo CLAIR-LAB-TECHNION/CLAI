@@ -5,12 +5,13 @@
 Technion Collaborative AI (Spring 2024)
   <br>
   <br>
-  <br>
   <img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/CLAI_logo.png?raw=true">
 </h1>
+  <p align ="center">
+    <a href="mailto:sarahk@cs.technion.ac.il">Sarah Keren</a> 
+
   <p align="center">
     <a href="mailto:itaysegev@campus.technion.ac.il">Itay Segev</a> •
-    <a href="mailto:sarahk@cs.technion.ac.il">Sarah Keren</a> •
     <a href="mailto:eandrey@campus.technion.ac.il">Andrey Elashkin</a>
   </p>
 
@@ -18,7 +19,7 @@ Jupyter Notebook tutorials for the Technion's CS 236203 course Collaborative AI
 
 <h4 align="center">
     <a href="https://colab.research.google.com/github/CLAIR-LAB-TECHNION/CLAI"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
-    <a href="https://nbviewer.jupyter.org/github/github/CLAIR-LAB-TECHNION/CLAI/tree/main/"><img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/nbviewer_badge.svg" alt="Open In NBViewer"/></a>
+    <a href="https://nbviewer.org/github/CLAIR-LAB-TECHNION/CLAI/tree/main/tutorials/"><img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/nbviewer_badge.svg" alt="Open In NBViewer"/></a>
 </h4>
 
 
@@ -57,7 +58,7 @@ You can view the tutorials online or download and run locally.
 
 Jupyter Nbviewer:
 
-[![nbviewer](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/nbviewer_badge.svg)](https://nbviewer.jupyter.org/github/github/CLAIR-LAB-TECHNION/CLAI/tree/main/)
+[![nbviewer](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/nbviewer_badge.svg)](https://nbviewer.org/github/CLAIR-LAB-TECHNION/CLAI/tree/main/tutorials/)
 
 
 Press on the "Open in Colab" button below to use Google Colab:
@@ -100,7 +101,8 @@ In Windows open `Anaconda Prompt` from the start menu, in Mac/Linux open the ter
 
 
 
-5. To open the notebooks, open Ananconda Navigator or run `jupyter notebook` in the terminal (or `Anaconda Prompt` in Windows) while the `deep_learn` environment is activated.
+5. To open the notebooks, open Ananconda Navigator or run `jupyter notebook` in the terminal (or `Anaconda Prompt` in Windows) while the `CLAI` environment is activated.
+
 <br>
 <br>
 
