@@ -1,9 +1,9 @@
 __author__ = 'sarah'
 
-import AI_agents.Search.utils as utils
-import AI_agents.Search.defs as defs
-import AI_agents.Search.heuristic as heuristic
-import AI_agents.Search.constraint as constraint
+import ai_dm.Search.utils as utils
+import ai_dm.Search.defs as defs
+import ai_dm.Search.heuristic as heuristic
+import ai_dm.Search.constraint as constraint
 import logging, time
 
 # TODO: take care of logs
