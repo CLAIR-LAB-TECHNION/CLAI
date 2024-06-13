@@ -1,7 +1,7 @@
 __author__ = 'sarah'
 
 from abc import ABC, abstractmethod
-import ai_dm.Search.utils as utils
+import aidm.Search.utils as utils
 
 
 class Constraint (ABC):
