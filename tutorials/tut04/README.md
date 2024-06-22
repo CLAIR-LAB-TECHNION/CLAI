@@ -4,7 +4,7 @@ Welcome to the Policy Gradient Tutorial.
 <br>
 <br>
 
-<img src="https://s3-us-west-2.amazonaws.com/courses-images-archive-read-only/wp-content/uploads/sites/902/2015/02/23224815/CNX_Psych_06_04_Monkey.jpg>
+<img src="https://www.gymlibrary.dev/_images/cart_pole.gif">
 
 ## Setup
 
