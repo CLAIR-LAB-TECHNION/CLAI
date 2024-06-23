@@ -1,0 +1,16 @@
+[
+  {
+    "objectID": "index.html#section-7",
+    "href": "index.html#section-7",
+    "title": "Policy Gradient",
+    "section": "",
+    "text": "\\[\\begin{align*}\n\\nabla_{\\theta} J(\\pi_{\\theta}) &= \\nabla_{\\theta} \\mathbb{E}_{\\tau \\sim \\pi_{\\theta}}[R(\\tau)] \\\\\n&= \\nabla_{\\theta} \\int_{\\tau} P(\\tau|\\theta) R(\\tau) \\quad \\text{(Expand expectation)} \\\\\n&= \\int_{\\tau} \\nabla_{\\theta} P(\\tau|\\theta) R(\\tau) \\quad \\text{(Bring gradient under integral)} \\\\\n&= \\int_{\\tau} P(\\tau|\\theta) \\nabla_{\\theta} \\log P(\\tau|\\theta) R(\\tau) \\quad \\text{(Log-derivative trick)} \\\\\n&= \\mathbb{E}_{\\tau \\sim \\pi_{\\theta}}[\\nabla_{\\theta} \\log P(\\tau|\\theta) R(\\tau)] \\quad \\text{(Return to expectation)} \\\\\n\\therefore \\nabla_{\\theta} J(\\pi_{\\theta}) &= \\mathbb{E}_{\\tau \\sim \\pi_{\\theta}} \\left[ \\sum_{t=0}^{T} \\nabla_{\\theta} \\log \\pi_{\\theta}(a_t |s_t) R(\\tau) \\right]\n\\end{align*}\\]"
+  },
+  {
+    "objectID": "index.html#task-2-reinforce-algorithm",
+    "href": "index.html#task-2-reinforce-algorithm",
+    "title": "Policy Gradient",
+    "section": "Task 2: REINFORCE Algorithm",
+    "text": "Task 2: REINFORCE Algorithm\n\nInitialize policy parameters \\(\\theta\\)\nFor each episode:\n\nSample a trajectory \\(\\tau\\) by running the policy \\(\\pi_{\\theta}\\)\nCompute the cumulative reward \\(R(\\tau)\\)\nCompute the gradient estimate \\(\\hat{g} = \\sum_{t=1}^{T} \\nabla_{\\theta} \\log \\pi_{\\theta}(a_t \\mid s_t) R(\\tau)\\)\nUpdate the policy parameters: \\(\\theta \\leftarrow \\theta + \\alpha \\hat{g}\\)"
+  }
+]
