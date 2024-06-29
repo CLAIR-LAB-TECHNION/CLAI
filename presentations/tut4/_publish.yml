@@ -1,0 +1,4 @@
+- source: project
+  quarto-pub:
+    - id: e84af02c-3e52-49a5-98e2-1e9cdd7e8048
+      url: 'https://itaysegev.quarto.pub/policy-gradient-tutorial'
