@@ -1,0 +1,89 @@
+---
+title: "Policy Gradient"
+subtitle: "CLAI Tutorial 4"
+author: "Itay Segev"
+format:
+  revealjs: 
+    slide-number: true
+    chalkboard: 
+      buttons: false
+    preview-links: auto
+    logo: https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/CLAIR_logo.png?raw=true
+    css: style.css
+
+--- 
+
+ 
+##  {background="#43464B" background-image="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/reward_hypothesis.jpeg?raw=true"}
+
+
+##  {background="#43464B" background-image="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/tut04_Reward.png?raw=true"}
+
+ 
+
+##  {background="#43464B" background-image="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/tut04_rl_anatomy.png?raw=true"}
+
+
+
+## {background="#43464B" background-image="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/tut04_pg_scheme.png?raw=true"}
+
+## 
+
+
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/tut04_objective_func_1.png?raw=true)
+
+## 
+
+
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/tut04_objective_func_2.png?raw=true)
+
+## 
+
+
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/tut04_objective_func_3.png?raw=true)
+
+##
+
+```{=tex}
+\begin{align*}
+\nabla_{\theta} J(\pi_{\theta}) &= \nabla_{\theta} \mathbb{E}_{\tau \sim \pi_{\theta}}[R(\tau)] \\
+&= \nabla_{\theta} \int_{\tau} P(\tau|\theta) R(\tau) \quad \text{(Expand expectation)} \\
+&= \int_{\tau} \nabla_{\theta} P(\tau|\theta) R(\tau) \quad \text{(Bring gradient under integral)} \\
+&= \int_{\tau} P(\tau|\theta) \nabla_{\theta} \log P(\tau|\theta) R(\tau) \quad \text{(Log-derivative trick)} \\
+&= \mathbb{E}_{\tau \sim \pi_{\theta}}[\nabla_{\theta} \log P(\tau|\theta) R(\tau)] \quad \text{(Return to expectation)} \\
+\therefore \nabla_{\theta} J(\pi_{\theta}) &= \mathbb{E}_{\tau \sim \pi_{\theta}} \left[ \sum_{t=0}^{T} \nabla_{\theta} \log \pi_{\theta}(a_t |s_t) R(\tau) \right]
+\end{align*}
+```
+
+## 
+
+
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/tut04_pg_one_tj.png?raw=true)
+
+## 
+
+
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/tut04_pg_multiple.png?raw=true)
+
+## Task 2: REINFORCE Algorithm
+
+1. Initialize policy parameters $\theta$
+2. For each episode:
+    - Sample a trajectory $\tau$ by running the policy $\pi_{\theta}$
+    - Compute the cumulative reward $R(\tau)$
+    - Compute the gradient estimate $\hat{g} = \sum_{t=1}^{T} \nabla_{\theta} \log \pi_{\theta}(a_t \mid s_t) R(\tau)$
+    - Update the policy parameters: $\theta \leftarrow \theta + \alpha \hat{g}$
+
+## 
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/tut04_ml_comparison.png?raw=true)
+
+## 
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/tut04_pg_issues.png?raw=true)
+
+## 
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/tut04_reducing_var.png?raw=true)
+
+
+## {background="#43464B" background-image="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/tut04_creation_of_ai.png?raw=true"}
+
+

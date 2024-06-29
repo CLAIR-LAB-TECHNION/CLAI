@@ -1,0 +1,382 @@
+---
+title: "Introduction to Reinforcement Learning"
+author: "Itay Segev"
+format:
+  revealjs: 
+    slide-number: true
+    chalkboard: 
+      buttons: false
+    preview-links: auto
+    logo: https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/CLAIR_logo.png?raw=true
+    css: style.css
+
+--- 
+
+## Key Concepts
+
+
+![Agent-environment interaction loop](https://spinningup.openai.com/en/latest/_images/rl_diagram_transparent_bg.png)
+
+
+## RL Process Example
+
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/RL_process_game.jpg)
+
+
+## RL Process - code example
+
+``` {.python code-line-numbers="2-3|6|7|9-10"} 
+import gymnasium as gym
+env = gym.make("CartPole-v1")
+observation, info = env.reset()
+
+for _ in range(1000):
+    action = env.action_space.sample()  # agent policy that uses the observation and info
+    observation, reward, terminated, truncated, info = env.step(action)
+
+    if terminated or truncated:
+        observation, info = env.reset()
+
+env.close()
+```
+
+
+## Observations/States Space
+
+::: incremental
+-   State $s$: is a complete description of the state of the world (there is no hidden information). In a fully observed environment.
+-   Observation $o$: is a partial description of the state. In a partially observed environment.
+:::
+ 
+
+## Observations/States Space
+
+There is a differentiation to make between observation and state:
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/chess.jpg){.absolute top="200" left="30" width="450"}
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/mario.jpg){.absolute top="200" right="80" width="450"}
+
+
+
+## States Space - code example
+
+The state space of the CartPole-v1 environment is represented by a 4-dimensional vector:
+
+```{python}
+#| echo: true
+import gymnasium as gym
+env = gym.make("CartPole-v1")
+
+print("The State Space is: ", env.observation_space)
+print("Sample observation", env.observation_space.sample()) # Get a random observation
+```
+
+
+## Action Space
+
+Different environments allow different kinds of actions.
+
+::: incremental
+-   Discrete action spaces, where only a finite number of moves are available to the agent.
+-  Continuous spaces, where actions are real-valued vectors.
+
+:::
+
+## Action Space - code example
+
+The action space is discrete, consisting of two possible actions:
+
+```{python}
+#| echo: true
+print("The State Space is: ", env.action_space)
+print("Sample observation", env.action_space.sample()) # Get a randoma action
+```
+
+
+
+## Markov Property in RL
+
+The Markov Property implies that our agent needs only the current state to decide what action to take and not the history of all the states and actions they took before.
+
+```{=tex}
+\begin{align*}
+
+P(s_{t+1} | s_t, a_t, s_{t-1}, a_{t-1}, \dots, s_0, a_0) = P(s_{t+1} | s_t, a_t)
+
+\end{align*}
+```
+
+## Trajectories
+
+A trajectory $\tau$ is a sequence of states and actions in the world,
+
+```{=tex}
+\begin{align*}
+
+\tau = (s_0, a_0, s_1, a_1, \ldots)
+
+\end{align*}
+```
+
+Trajectories are also frequently called episodes or rollouts.
+
+## Trajectories - code example
+
+```{python}
+#| echo: true
+#| output-location: slide
+num_steps = 10 
+trajectory = []
+state, _ = env.reset()
+# Sample trajectory
+for _ in range(num_steps):
+    action = env.action_space.sample()  # Sample a random action
+    next_state, reward, terminated, truncated, info = env.step(action)
+    trajectory.append((state, action, reward, next_state))  # Store the transition
+    state = next_state  # Update the state
+    if terminated or truncated:
+        break  # Apply the action to the environment
+# Print the trajectory
+for t, transition in enumerate(trajectory):
+    state, action, reward, next_state = transition
+    print(f"Step {t}: State: {state}, Action: {action}, Reward: {reward}, Next State: {next_state}")
+```
+
+
+ 
+## Policies
+
+A policy is a rule used by an agent to decide what actions to take.
+
+In deep RL, we deal with parameterized policies: policies whose outputs are computable functions that depend on a set of parameters (eg the weights and biases of a neural network) which we can adjust to change the behavior via some optimization algorithm.
+
+```{=tex}
+\begin{align*}
+a_t \sim \pi(\cdot | s_t)
+\end{align*}
+```
+
+## Policies - code example
+
+```{.python code-line-numbers="1-6|8-12|14-16|17-18|19-20"} 
+class Policy(nn.Module):
+    def __init__(self, s_size, a_size, h_size):
+        super(Policy, self).__init__()
+        self.fc1 = nn.Linear(s_size, h_size)
+        self.fc2 = nn.Linear(h_size, a_size)
+        self.log_std = nn.Parameter(torch.zeros(a_size))  # Log standard deviation
+
+    def forward(self, x):
+        x = F.relu(self.fc1(x))
+        mu = self.fc2(x)
+        std = torch.exp(self.log_std)  # Standard deviation
+        return mu, std
+
+policy = Policy(s_size, a_size, h_size)
+# Forward pass through the policy to get mean and standard deviation of action distribution
+mu, std = policy(state.unsqueeze(0))  # add batch dimension
+m = Normal(mu, std)
+action = m.sample()
+# Calculate the log probability of the sampled action
+log_prob = m.log_prob(action).sum(dim=-1)
+```
+
+
+
+## Reward and Return
+
+The reward function R is critically important in reinforcement learning. It depends on the current state of the world, the action just taken, and the next state of the world:
+
+```{=tex}
+\begin{align*}
+
+r_t = R(s_t, a_t, s_{t+1})
+
+\end{align*}
+```
+
+The reward is fundamental in RL because it’s the only feedback for the agent. Thanks to it, our agent knows if the action taken was good or not.
+
+
+## Finite-Horizon Return
+
+Sum of rewards obtained in a fixed window of steps:
+
+![The cumulative reward equals the sum of all rewards in the sequence](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/rewards_1.jpg)
+
+
+## Infinite-Horizon Return
+
+Sum of all rewards ever obtained by the agent, but discounted by how far off in the future they’re obtained:
+
+![Discounted expected cumulative reward](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/rewards_4.jpg)
+
+
+
+## The Discount Factor
+
+The discount factor $\gamma \in (0,1)$ is both intuitively appealing and mathematically convenient.
+
+- On an intuitive level: cash now is better than cash later. 
+
+- Mathematically: an infinite-horizon sum of rewards may not converge to a finite value, and is hard to deal with in equations. But with a discount factor and under reasonable conditions, the infinite sum converges.
+
+
+## The RL Problem
+
+The goal in RL is to select a policy which maximizes expected return when the agent acts according to it.
+
+Let’s suppose that both the environment transitions and the policy are stochastic. In this case, the probability of a T -step trajectory is:
+
+```{=tex}
+\begin{align*}
+
+P(\tau|\pi) = \rho_0 (s_0) \prod_{t=0}^{T-1} P(s_{t+1} | s_t, a_t) \pi(a_t | s_t)
+
+\end{align*}
+```
+
+## The RL Problem
+The expected return (for whichever measure), denoted by $J(\pi)$, is then:
+
+```{=tex}
+\begin{align*}
+
+J(\pi) = \int_{\tau} P(\tau|\pi) R(\tau) = \mathbb{E}_{\tau\sim \pi}[R(\tau)]
+
+\end{align*}
+```
+
+## The RL Problem
+
+The central optimization problem in RL can then be expressed by
+
+```{=tex}
+\begin{align*}
+
+\pi^* = \arg \max_{\pi} J(\pi)
+
+\end{align*}
+```
+
+with $\pi^*$ being the optimal policy.
+
+
+## Episodic task
+
+In this case, we have a starting point and an ending point (a terminal state). This creates an episode: a list of States, Actions, Rewards, and new States.
+
+![Beginning of a new episode.](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/mario.jpg)
+
+
+
+
+## Continuing tasks
+
+These are tasks that continue forever (no terminal state). In this case, the agent must learn how to choose the best actions and simultaneously interact with the environment.
+
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/stock.jpg)
+
+## The Anatomy of a RL Algorithm
+
+![The anatomy of a reinforcement learning algorithm](https://www.researchgate.net/profile/Jonathan-Boron-2/publication/344589417/figure/fig2/AS:945255583080448@1602377901230/Structure-of-a-Reinforcement-Learning-Algorithm-Source-10.png)
+
+
+## A Taxonomy of RL Algorithms
+
+![A non-exhaustive, but useful taxonomy of algorithms in modern RL](https://spinningup.openai.com/en/latest/_images/rl_algorithms_9_15.svg)
+
+
+## Model-Free vs Model-Based RL
+
+- One of the most important branching points in an RL algorithm is the question of whether the agent has access to (or learns) a model of the environment.
+  
+- By a model of the environment, we mean a function which predicts state transitions and rewards.
+
+- Algorithms which use a model are called model-based methods, and those that don’t are called model-free.
+ 
+## Model-Based RL
+
+
+![](https://www.kukuxiaai.com/images/blog/reinforcement_learning/CS285/introduction_to_rl_8.png)
+
+
+## Model-Based RL - Improve the Policy
+
+Pure Planning:
+  
+  - The most basic approach never explicitly represents the policy, and instead, uses pure planning techniques
+
+  
+
+## Model-Based RL - Improve the Policy
+
+Expert Iteration: 
+  
+  - A straightforward follow-on to pure planning involves using and learning an explicit representation of the policy, $\pi_{\theta}(a|s)$.
+  
+  - The agent uses a planning algorithm (like Monte Carlo Tree Search) in the model, generating candidate actions for the plan by sampling from its current policy. 
+
+  - The planning algorithm produces an action which is better than what the policy alone would have produced, hence it is an “expert” relative to the policy.
+
+
+
+## Model-Based RL - Improve the Policy
+
+Data Augmentation for Model-Free Methods:
+
+  - Augment real experiences and use a model-free RL algorithm to train a policy.
+
+  
+
+## Model-Free - Policy Based
+
+
+![](images/pg.png)
+
+
+## Model-Free - Value Based
+
+
+![](images/vb.png)
+
+
+## Exploration/Exploitation Trade-Off
+
+- Exploration is trying random actions in order to find more information about the environment.
+
+- Exploitation is exploiting known information to maximize the reward.
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/exp_2.jpg)
+
+## Why so many RL algorithms? 
+
+- Different tradeoffs - Sample efficiency, Stability & ease of use
+
+- Different assumptions - Stochastic or deterministic? Continuous or discrete? Episodic or infinite horizon?
+
+- Different things are easy or hard in
+different settings - Easier to represent the policy? Easier to represent the model?
+
+
+## Sample Efficiency
+
+How many samples do we need to get a good policy?
+
+- Off policy: able to improve the policy without generating new samples from that policy
+
+- On policy: each time the policy is changed, even a little bit, we need to generate new samples
+
+![](https://braindump.jethro.dev/ox-hugo/screenshot2019-12-16_01-35-50_.png)
+
+
+## Real-Life Applications
+
+![Deep Reinforcement Learning applications](https://cdn.prod.website-files.com/5d7b77b063a9066d83e1209c/626225c5a5602e1b840a31f0_NxKq7jCHZUXiteWRVby-UO1NTxb7A9qPCeoo1_8licAkii03hzieJdWreERWoVpf-gxw1xsM5xaHmDwOmMD6iyeTflSfx2426CjgoTWCEAhVSme7qqKMVdln-sR0CoS1q3vNx8RV.png)
+
+ 
+
+
