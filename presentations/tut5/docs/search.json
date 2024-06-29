@@ -1,0 +1,254 @@
+[
+  {
+    "objectID": "index.html#key-concepts",
+    "href": "index.html#key-concepts",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Key Concepts",
+    "text": "Key Concepts\n\nAgent-environment interaction loop"
+  },
+  {
+    "objectID": "index.html#rl-process-example",
+    "href": "index.html#rl-process-example",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "RL Process Example",
+    "text": "RL Process Example"
+  },
+  {
+    "objectID": "index.html#rl-process---code-example",
+    "href": "index.html#rl-process---code-example",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "RL Process - code example",
+    "text": "RL Process - code example\nimport gymnasium as gym\nenv = gym.make(\"CartPole-v1\")\nobservation, info = env.reset()\n\nfor _ in range(1000):\n    action = env.action_space.sample()  # agent policy that uses the observation and info\n    observation, reward, terminated, truncated, info = env.step(action)\n\n    if terminated or truncated:\n        observation, info = env.reset()\n\nenv.close()"
+  },
+  {
+    "objectID": "index.html#observationsstates-space",
+    "href": "index.html#observationsstates-space",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Observations/States Space",
+    "text": "Observations/States Space\n\n\nState \\(s\\): is a complete description of the state of the world (there is no hidden information). In a fully observed environment.\nObservation \\(o\\): is a partial description of the state. In a partially observed environment."
+  },
+  {
+    "objectID": "index.html#observationsstates-space-1",
+    "href": "index.html#observationsstates-space-1",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Observations/States Space",
+    "text": "Observations/States Space\nThere is a differentiation to make between observation and state:"
+  },
+  {
+    "objectID": "index.html#states-space---code-example",
+    "href": "index.html#states-space---code-example",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "States Space - code example",
+    "text": "States Space - code example\nThe state space of the CartPole-v1 environment is represented by a 4-dimensional vector:\n\nimport gymnasium as gym\nenv = gym.make(\"CartPole-v1\")\n\nprint(\"The State Space is: \", env.observation_space)\nprint(\"Sample observation\", env.observation_space.sample()) # Get a random observation\n\nThe State Space is:  Box([-4.8000002e+00 -3.4028235e+38 -4.1887903e-01 -3.4028235e+38], [4.8000002e+00 3.4028235e+38 4.1887903e-01 3.4028235e+38], (4,), float32)\nSample observation [ 3.3713124e+00 -3.1039384e+38 -6.7093872e-02  1.0356006e+38]"
+  },
+  {
+    "objectID": "index.html#action-space",
+    "href": "index.html#action-space",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Action Space",
+    "text": "Action Space\nDifferent environments allow different kinds of actions.\n\n\nDiscrete action spaces, where only a finite number of moves are available to the agent.\nContinuous spaces, where actions are real-valued vectors."
+  },
+  {
+    "objectID": "index.html#action-space---code-example",
+    "href": "index.html#action-space---code-example",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Action Space - code example",
+    "text": "Action Space - code example\nThe action space is discrete, consisting of two possible actions:\n\nprint(\"The State Space is: \", env.action_space)\nprint(\"Sample observation\", env.action_space.sample()) # Get a randoma action\n\nThe State Space is:  Discrete(2)\nSample observation 1"
+  },
+  {
+    "objectID": "index.html#markov-property-in-rl",
+    "href": "index.html#markov-property-in-rl",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Markov Property in RL",
+    "text": "Markov Property in RL\nThe Markov Property implies that our agent needs only the current state to decide what action to take and not the history of all the states and actions they took before.\n\\[\\begin{align*}\n\nP(s_{t+1} | s_t, a_t, s_{t-1}, a_{t-1}, \\dots, s_0, a_0) = P(s_{t+1} | s_t, a_t)\n\n\\end{align*}\\]"
+  },
+  {
+    "objectID": "index.html#trajectories",
+    "href": "index.html#trajectories",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Trajectories",
+    "text": "Trajectories\nA trajectory \\(\\tau\\) is a sequence of states and actions in the world,\n\\[\\begin{align*}\n\n\\tau = (s_0, a_0, s_1, a_1, \\ldots)\n\n\\end{align*}\\]\nTrajectories are also frequently called episodes or rollouts."
+  },
+  {
+    "objectID": "index.html#trajectories---code-example",
+    "href": "index.html#trajectories---code-example",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Trajectories - code example",
+    "text": "Trajectories - code example\n\nnum_steps = 10 \ntrajectory = []\nstate, _ = env.reset()\n# Sample trajectory\nfor _ in range(num_steps):\n    action = env.action_space.sample()  # Sample a random action\n    next_state, reward, terminated, truncated, info = env.step(action)\n    trajectory.append((state, action, reward, next_state))  # Store the transition\n    state = next_state  # Update the state\n    if terminated or truncated:\n        break  # Apply the action to the environment\n# Print the trajectory\nfor t, transition in enumerate(trajectory):\n    state, action, reward, next_state = transition\n    print(f\"Step {t}: State: {state}, Action: {action}, Reward: {reward}, Next State: {next_state}\")"
+  },
+  {
+    "objectID": "index.html#trajectories---code-example-output",
+    "href": "index.html#trajectories---code-example-output",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Trajectories - code example",
+    "text": "Trajectories - code example\n\nStep 0: State: [ 0.00517019  0.01235193  0.01245645 -0.03071577], Action: 1, Reward: 1.0, Next State: [ 0.00541722  0.20729305  0.01184213 -0.31944266]\nStep 1: State: [ 0.00541722  0.20729305  0.01184213 -0.31944266], Action: 0, Reward: 1.0, Next State: [ 0.00956309  0.01200447  0.00545328 -0.02304883]\nStep 2: State: [ 0.00956309  0.01200447  0.00545328 -0.02304883], Action: 1, Reward: 1.0, Next State: [ 0.00980317  0.20704779  0.0049923  -0.3140062 ]\nStep 3: State: [ 0.00980317  0.20704779  0.0049923  -0.3140062 ], Action: 0, Reward: 1.0, Next State: [ 0.01394413  0.01185508 -0.00128782 -0.01975305]\nStep 4: State: [ 0.01394413  0.01185508 -0.00128782 -0.01975305], Action: 1, Reward: 1.0, Next State: [ 0.01418123  0.20699547 -0.00168288 -0.312842  ]\nStep 5: State: [ 0.01418123  0.20699547 -0.00168288 -0.312842  ], Action: 1, Reward: 1.0, Next State: [ 0.01832114  0.40214136 -0.00793972 -0.6060552 ]\nStep 6: State: [ 0.01832114  0.40214136 -0.00793972 -0.6060552 ], Action: 1, Reward: 1.0, Next State: [ 0.02636397  0.5973734  -0.02006083 -0.9012283 ]\nStep 7: State: [ 0.02636397  0.5973734  -0.02006083 -0.9012283 ], Action: 1, Reward: 1.0, Next State: [ 0.03831144  0.7927613  -0.03808539 -1.2001487 ]\nStep 8: State: [ 0.03831144  0.7927613  -0.03808539 -1.2001487 ], Action: 1, Reward: 1.0, Next State: [ 0.05416666  0.98835474 -0.06208837 -1.5045204 ]\nStep 9: State: [ 0.05416666  0.98835474 -0.06208837 -1.5045204 ], Action: 0, Reward: 1.0, Next State: [ 0.07393376  0.79403865 -0.09217878 -1.2318501 ]"
+  },
+  {
+    "objectID": "index.html#policies",
+    "href": "index.html#policies",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Policies",
+    "text": "Policies\nA policy is a rule used by an agent to decide what actions to take.\nIn deep RL, we deal with parameterized policies: policies whose outputs are computable functions that depend on a set of parameters (eg the weights and biases of a neural network) which we can adjust to change the behavior via some optimization algorithm.\n\\[\\begin{align*}\na_t \\sim \\pi(\\cdot | s_t)\n\\end{align*}\\]"
+  },
+  {
+    "objectID": "index.html#policies---code-example",
+    "href": "index.html#policies---code-example",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Policies - code example",
+    "text": "Policies - code example\nclass Policy(nn.Module):\n    def __init__(self, s_size, a_size, h_size):\n        super(Policy, self).__init__()\n        self.fc1 = nn.Linear(s_size, h_size)\n        self.fc2 = nn.Linear(h_size, a_size)\n        self.log_std = nn.Parameter(torch.zeros(a_size))  # Log standard deviation\n\n    def forward(self, x):\n        x = F.relu(self.fc1(x))\n        mu = self.fc2(x)\n        std = torch.exp(self.log_std)  # Standard deviation\n        return mu, std\n\npolicy = Policy(s_size, a_size, h_size)\n# Forward pass through the policy to get mean and standard deviation of action distribution\nmu, std = policy(state.unsqueeze(0))  # add batch dimension\nm = Normal(mu, std)\naction = m.sample()\n# Calculate the log probability of the sampled action\nlog_prob = m.log_prob(action).sum(dim=-1)"
+  },
+  {
+    "objectID": "index.html#reward-and-return",
+    "href": "index.html#reward-and-return",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Reward and Return",
+    "text": "Reward and Return\nThe reward function R is critically important in reinforcement learning. It depends on the current state of the world, the action just taken, and the next state of the world:\n\\[\\begin{align*}\n\nr_t = R(s_t, a_t, s_{t+1})\n\n\\end{align*}\\]\nThe reward is fundamental in RL because it’s the only feedback for the agent. Thanks to it, our agent knows if the action taken was good or not."
+  },
+  {
+    "objectID": "index.html#finite-horizon-return",
+    "href": "index.html#finite-horizon-return",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Finite-Horizon Return",
+    "text": "Finite-Horizon Return\nSum of rewards obtained in a fixed window of steps:\n\nThe cumulative reward equals the sum of all rewards in the sequence"
+  },
+  {
+    "objectID": "index.html#infinite-horizon-return",
+    "href": "index.html#infinite-horizon-return",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Infinite-Horizon Return",
+    "text": "Infinite-Horizon Return\nSum of all rewards ever obtained by the agent, but discounted by how far off in the future they’re obtained:\n\nDiscounted expected cumulative reward"
+  },
+  {
+    "objectID": "index.html#the-discount-factor",
+    "href": "index.html#the-discount-factor",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "The Discount Factor",
+    "text": "The Discount Factor\nThe discount factor \\(\\gamma \\in (0,1)\\) is both intuitively appealing and mathematically convenient.\n\nOn an intuitive level: cash now is better than cash later.\nMathematically: an infinite-horizon sum of rewards may not converge to a finite value, and is hard to deal with in equations. But with a discount factor and under reasonable conditions, the infinite sum converges."
+  },
+  {
+    "objectID": "index.html#the-rl-problem",
+    "href": "index.html#the-rl-problem",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "The RL Problem",
+    "text": "The RL Problem\nThe goal in RL is to select a policy which maximizes expected return when the agent acts according to it.\nLet’s suppose that both the environment transitions and the policy are stochastic. In this case, the probability of a T -step trajectory is:\n\\[\\begin{align*}\n\nP(\\tau|\\pi) = \\rho_0 (s_0) \\prod_{t=0}^{T-1} P(s_{t+1} | s_t, a_t) \\pi(a_t | s_t)\n\n\\end{align*}\\]"
+  },
+  {
+    "objectID": "index.html#the-rl-problem-1",
+    "href": "index.html#the-rl-problem-1",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "The RL Problem",
+    "text": "The RL Problem\nThe expected return (for whichever measure), denoted by \\(J(\\pi)\\), is then:\n\\[\\begin{align*}\n\nJ(\\pi) = \\int_{\\tau} P(\\tau|\\pi) R(\\tau) = \\mathbb{E}_{\\tau\\sim \\pi}[R(\\tau)]\n\n\\end{align*}\\]"
+  },
+  {
+    "objectID": "index.html#the-rl-problem-2",
+    "href": "index.html#the-rl-problem-2",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "The RL Problem",
+    "text": "The RL Problem\nThe central optimization problem in RL can then be expressed by\n\\[\\begin{align*}\n\n\\pi^* = \\arg \\max_{\\pi} J(\\pi)\n\n\\end{align*}\\]\nwith \\(\\pi^*\\) being the optimal policy."
+  },
+  {
+    "objectID": "index.html#episodic-task",
+    "href": "index.html#episodic-task",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Episodic task",
+    "text": "Episodic task\nIn this case, we have a starting point and an ending point (a terminal state). This creates an episode: a list of States, Actions, Rewards, and new States.\n\nBeginning of a new episode."
+  },
+  {
+    "objectID": "index.html#continuing-tasks",
+    "href": "index.html#continuing-tasks",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Continuing tasks",
+    "text": "Continuing tasks\nThese are tasks that continue forever (no terminal state). In this case, the agent must learn how to choose the best actions and simultaneously interact with the environment."
+  },
+  {
+    "objectID": "index.html#the-anatomy-of-a-rl-algorithm",
+    "href": "index.html#the-anatomy-of-a-rl-algorithm",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "The Anatomy of a RL Algorithm",
+    "text": "The Anatomy of a RL Algorithm\n\nThe anatomy of a reinforcement learning algorithm"
+  },
+  {
+    "objectID": "index.html#a-taxonomy-of-rl-algorithms",
+    "href": "index.html#a-taxonomy-of-rl-algorithms",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "A Taxonomy of RL Algorithms",
+    "text": "A Taxonomy of RL Algorithms\n\nA non-exhaustive, but useful taxonomy of algorithms in modern RL"
+  },
+  {
+    "objectID": "index.html#model-free-vs-model-based-rl",
+    "href": "index.html#model-free-vs-model-based-rl",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Model-Free vs Model-Based RL",
+    "text": "Model-Free vs Model-Based RL\n\nOne of the most important branching points in an RL algorithm is the question of whether the agent has access to (or learns) a model of the environment.\nBy a model of the environment, we mean a function which predicts state transitions and rewards.\nAlgorithms which use a model are called model-based methods, and those that don’t are called model-free."
+  },
+  {
+    "objectID": "index.html#model-based-rl",
+    "href": "index.html#model-based-rl",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Model-Based RL",
+    "text": "Model-Based RL"
+  },
+  {
+    "objectID": "index.html#model-based-rl---improve-the-policy",
+    "href": "index.html#model-based-rl---improve-the-policy",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Model-Based RL - Improve the Policy",
+    "text": "Model-Based RL - Improve the Policy\nPure Planning:\n\nThe most basic approach never explicitly represents the policy, and instead, uses pure planning techniques"
+  },
+  {
+    "objectID": "index.html#model-based-rl---improve-the-policy-1",
+    "href": "index.html#model-based-rl---improve-the-policy-1",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Model-Based RL - Improve the Policy",
+    "text": "Model-Based RL - Improve the Policy\nExpert Iteration:\n\nA straightforward follow-on to pure planning involves using and learning an explicit representation of the policy, \\(\\pi_{\\theta}(a|s)\\).\nThe agent uses a planning algorithm (like Monte Carlo Tree Search) in the model, generating candidate actions for the plan by sampling from its current policy.\nThe planning algorithm produces an action which is better than what the policy alone would have produced, hence it is an “expert” relative to the policy."
+  },
+  {
+    "objectID": "index.html#model-based-rl---improve-the-policy-2",
+    "href": "index.html#model-based-rl---improve-the-policy-2",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Model-Based RL - Improve the Policy",
+    "text": "Model-Based RL - Improve the Policy\nData Augmentation for Model-Free Methods:\n\nAugment real experiences and use a model-free RL algorithm to train a policy."
+  },
+  {
+    "objectID": "index.html#model-free---policy-based",
+    "href": "index.html#model-free---policy-based",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Model-Free - Policy Based",
+    "text": "Model-Free - Policy Based"
+  },
+  {
+    "objectID": "index.html#model-free---value-based",
+    "href": "index.html#model-free---value-based",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Model-Free - Value Based",
+    "text": "Model-Free - Value Based"
+  },
+  {
+    "objectID": "index.html#explorationexploitation-trade-off",
+    "href": "index.html#explorationexploitation-trade-off",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Exploration/Exploitation Trade-Off",
+    "text": "Exploration/Exploitation Trade-Off\n\nExploration is trying random actions in order to find more information about the environment.\nExploitation is exploiting known information to maximize the reward."
+  },
+  {
+    "objectID": "index.html#why-so-many-rl-algorithms",
+    "href": "index.html#why-so-many-rl-algorithms",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Why so many RL algorithms?",
+    "text": "Why so many RL algorithms?\n\nDifferent tradeoffs - Sample efficiency, Stability & ease of use\nDifferent assumptions - Stochastic or deterministic? Continuous or discrete? Episodic or infinite horizon?\nDifferent things are easy or hard in different settings - Easier to represent the policy? Easier to represent the model?"
+  },
+  {
+    "objectID": "index.html#sample-efficiency",
+    "href": "index.html#sample-efficiency",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Sample Efficiency",
+    "text": "Sample Efficiency\nHow many samples do we need to get a good policy?\n\nOff policy: able to improve the policy without generating new samples from that policy\nOn policy: each time the policy is changed, even a little bit, we need to generate new samples"
+  },
+  {
+    "objectID": "index.html#real-life-applications",
+    "href": "index.html#real-life-applications",
+    "title": "Introduction to Reinforcement Learning",
+    "section": "Real-Life Applications",
+    "text": "Real-Life Applications\n\n\n\nDeep Reinforcement Learning applications"
+  }
+]

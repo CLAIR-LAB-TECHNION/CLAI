@@ -1,0 +1,4 @@
+- source: project
+  quarto-pub:
+    - id: bcf3c12b-92c4-439f-9baa-a30323c3f4fb
+      url: 'https://itaysegev.quarto.pub/introduction-to-rl'
