@@ -1,5 +1,6 @@
 ---
 title: "Value Based Methods"
+subtitle: "CLAI tutorial 6"
 author: "Itay Segev"
 format:
   revealjs: 
@@ -36,59 +37,24 @@ format:
 ## Value Functions
 \
 
-**On-Policy Value Function $V^{\pi} (s)$**: 
+**Value Function $v^{\pi} (s)$**: 
 
 ```{=tex}
 \begin{align*}
-V^{\pi}(s) = \mathbb{E}_{\tau \sim \pi}[R(\tau) \mid s_0 = s]
+v^{\pi}(s) &\equiv \mathbb{E}^{\pi}\left[ G_t \mid S_t = s \right] \\
+           &= \mathbb{E}^{\pi} \left[ \sum_{k=0}^{\infty} \gamma^k R_{t+k+1} \mid S_t = s \right]
 \end{align*}
 ```
 \
-**On-Policy Action-Value Function $Q^{\pi}(s,a)$**: 
-\
-
-```{=tex}
-\begin{align*}
-Q^{\pi}(s,a) = \mathbb{E}_{\tau \sim \pi}[R(\tau) \mid s_0 = s, a_0 = a]
-\end{align*}
-```
-
-
-## Optimal Value Functions
-\
-
-**Optimal Value Function $V^*(s)$**: 
+**Action-Value Function $q^{\pi}(s,a)$**: 
 \
 
 ```{=tex}
 \begin{align*}
-V^*(s) = \max_{\pi} \mathbb{E}_{\tau \sim \pi}[R(\tau) \mid s_0 = s]
+q^{\pi}(s, a) &\equiv \mathbb{E}^{\pi} \left[ G_t \mid S_t = s, A_t = a \right] \\
+              &= \mathbb{E}^{\pi} \left[ \sum_{k=0}^{\infty} \gamma^k R_{t+k+1} \mid S_t = s, A_t = a \right]
 \end{align*}
 ```
-\
-
-**Optimal Action-Value Function $Q^*(s,a)$**: 
-\ 
-
-```{=tex}
-\begin{align*}
-Q^*(s,a) = \max_{\pi} \mathbb{E}_{\tau \sim \pi}[R(\tau) \mid s_0 = s, a_0 = a]
-\end{align*}
-```
-
-## The Optimal Action
-
-If we have $Q^*$, we can directly obtain the optimal action $a^*(s)$ as:
-
-```{=tex}
-\begin{align*}
-a^*(s) = \arg \max_a Q^*(s,a)
-\end{align*}
-```
-\
-
-Note that there may be multiple actions which maximize $Q^*(s,a)$, in which case, all of them are optimal.
-
 
 ## Bellman Equations
 \
@@ -98,7 +64,6 @@ v^{\pi}(s) &= \sum_{a} \pi(a|s) q^{\pi}(s, a) \\
            &= \sum_{a} \pi(a|s) \sum_{s', r} p(s', r | s, a) \left[ r + \gamma v^{\pi}(s') \right]
 \end{align*}
 ```
-\
 
 ```{=tex}
 \begin{align*}
@@ -106,6 +71,40 @@ q^{\pi}(s, a) &= \sum_{s', r} p(s', r | s, a) \left[ r + \gamma v^{\pi}(s') \rig
               &= \sum_{s', r} p(s', r | s, a) \left[ r + \gamma \sum_{a'} \pi(a' | s') q^{\pi}(s', a') \right]
 \end{align*}
 ```
+
+
+## Optimal Value Functions
+\
+
+**Optimal Value Function $v^*(s)$**: 
+\
+
+```{=tex}
+\begin{align*}
+v^*(s) &= \max_{a} \sum_{s', r} p(s', r \mid s, a) \left[ r + \gamma v^*(s') \right]
+\end{align*}
+```
+\
+
+**Optimal Action-Value Function $q^*(s,a)$**: 
+\ 
+
+```{=tex}
+\begin{align*}
+q^*(s, a) &= \mathbb{E} \left[ R_{t+1} + \gamma \max_{a'} q^*(S_{t+1}, a') \mid S_t = s, A_t = a \right] \\
+          &= \sum_{s', r} p(s', r \mid s, a) \left[ r + \gamma \max_{a'} q^*(s', a') \right]
+\end{align*}
+```
+
+## The Optimal Policy
+\
+
+-  Once we have $v^*$ , it’s easy to find the optimal policy (greedy with respect to the optimal evaluation function $v^*$.
+
+\
+
+-  It’s even easier if we have $q^*$ because we just take the max without even having to do the one-step lookahead (i.e using the environment’s dynamics which we often do not have)
+
 
 
 ## Value Iteration
@@ -157,3 +156,30 @@ How many samples do we need to get a good policy?
 - On policy: each time the policy is changed, even a little bit, we need to generate new samples
 
 ![](https://braindump.jethro.dev/ox-hugo/screenshot2019-12-16_01-35-50_.png)
+
+
+
+## Bellman Operator
+
+
+The Bellman operator $\mathcal{T}$ defines the recursive relationship for value functions in MDPs.
+
+\
+
+**For a given policy $\pi$:**
+```{=tex}
+\begin{align}
+
+(\mathcal{T}^{\pi} v)(s) = \sum_{a} \pi(a|s) \sum_{s', r} p(s', r|s, a) \left[ r + \gamma v(s') \right]
+
+\end{align}
+```
+
+**For the optimal value function $v^*$:**
+```{=tex}
+\begin{align}
+
+(\mathcal{T} v)(s) = \max_{a} \sum_{s', r} p(s', r|s, a) \left[ r + \gamma v(s') \right]
+
+\end{align}
+```
