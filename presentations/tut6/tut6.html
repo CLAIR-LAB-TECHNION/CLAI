@@ -328,6 +328,7 @@
 
 <section id="title-slide" class="center">
   <h1 class="title">Value Based Methods</h1>
+  <p class="subtitle">CLAI tutorial 6</p>
   <p class="author">Itay Segev</p>
 </section>
 
@@ -351,42 +352,18 @@
 <h2>Value Functions</h2>
 <p><br>
 </p>
-<p><strong>On-Policy Value Function <span class="math inline">\(V^{\pi} (s)\)</span></strong>:</p>
+<p><strong>Value Function <span class="math inline">\(v^{\pi} (s)\)</span></strong>:</p>
 <span class="math display">\[\begin{align*}
-V^{\pi}(s) = \mathbb{E}_{\tau \sim \pi}[R(\tau) \mid s_0 = s]
+v^{\pi}(s) &amp;\equiv \mathbb{E}^{\pi}\left[ G_t \mid S_t = s \right] \\
+           &amp;= \mathbb{E}^{\pi} \left[ \sum_{k=0}^{\infty} \gamma^k R_{t+k+1} \mid S_t = s \right]
 \end{align*}\]</span>
 <p><br>
-<strong>On-Policy Action-Value Function <span class="math inline">\(Q^{\pi}(s,a)\)</span></strong>:<br>
+<strong>Action-Value Function <span class="math inline">\(q^{\pi}(s,a)\)</span></strong>:<br>
 </p>
 <span class="math display">\[\begin{align*}
-Q^{\pi}(s,a) = \mathbb{E}_{\tau \sim \pi}[R(\tau) \mid s_0 = s, a_0 = a]
+q^{\pi}(s, a) &amp;\equiv \mathbb{E}^{\pi} \left[ G_t \mid S_t = s, A_t = a \right] \\
+              &amp;= \mathbb{E}^{\pi} \left[ \sum_{k=0}^{\infty} \gamma^k R_{t+k+1} \mid S_t = s, A_t = a \right]
 \end{align*}\]</span>
-</section>
-<section id="optimal-value-functions" class="slide level2">
-<h2>Optimal Value Functions</h2>
-<p><br>
-</p>
-<p><strong>Optimal Value Function <span class="math inline">\(V^*(s)\)</span></strong>:<br>
-</p>
-<span class="math display">\[\begin{align*}
-V^*(s) = \max_{\pi} \mathbb{E}_{\tau \sim \pi}[R(\tau) \mid s_0 = s]
-\end{align*}\]</span>
-<p><br>
-</p>
-<p><strong>Optimal Action-Value Function <span class="math inline">\(Q^*(s,a)\)</span></strong>: &nbsp;</p>
-<span class="math display">\[\begin{align*}
-Q^*(s,a) = \max_{\pi} \mathbb{E}_{\tau \sim \pi}[R(\tau) \mid s_0 = s, a_0 = a]
-\end{align*}\]</span>
-</section>
-<section id="the-optimal-action" class="slide level2">
-<h2>The Optimal Action</h2>
-<p>If we have <span class="math inline">\(Q^*\)</span>, we can directly obtain the optimal action <span class="math inline">\(a^*(s)\)</span> as:</p>
-<span class="math display">\[\begin{align*}
-a^*(s) = \arg \max_a Q^*(s,a)
-\end{align*}\]</span>
-<p><br>
-</p>
-<p>Note that there may be multiple actions which maximize <span class="math inline">\(Q^*(s,a)\)</span>, in which case, all of them are optimal.</p>
 </section>
 <section id="bellman-equations" class="slide level2">
 <h2>Bellman Equations</h2>
@@ -396,12 +373,40 @@ a^*(s) = \arg \max_a Q^*(s,a)
 v^{\pi}(s) &amp;= \sum_{a} \pi(a|s) q^{\pi}(s, a) \\
            &amp;= \sum_{a} \pi(a|s) \sum_{s', r} p(s', r | s, a) \left[ r + \gamma v^{\pi}(s') \right]
 \end{align*}\]</span>
-<p><br>
-</p>
 <span class="math display">\[\begin{align*}
 q^{\pi}(s, a) &amp;= \sum_{s', r} p(s', r | s, a) \left[ r + \gamma v^{\pi}(s') \right] \\
               &amp;= \sum_{s', r} p(s', r | s, a) \left[ r + \gamma \sum_{a'} \pi(a' | s') q^{\pi}(s', a') \right]
 \end{align*}\]</span>
+</section>
+<section id="optimal-value-functions" class="slide level2">
+<h2>Optimal Value Functions</h2>
+<p><br>
+</p>
+<p><strong>Optimal Value Function <span class="math inline">\(v^*(s)\)</span></strong>:<br>
+</p>
+<span class="math display">\[\begin{align*}
+v^*(s) &amp;= \max_{a} \sum_{s', r} p(s', r \mid s, a) \left[ r + \gamma v^*(s') \right]
+\end{align*}\]</span>
+<p><br>
+</p>
+<p><strong>Optimal Action-Value Function <span class="math inline">\(q^*(s,a)\)</span></strong>: &nbsp;</p>
+<span class="math display">\[\begin{align*}
+q^*(s, a) &amp;= \mathbb{E} \left[ R_{t+1} + \gamma \max_{a'} q^*(S_{t+1}, a') \mid S_t = s, A_t = a \right] \\
+          &amp;= \sum_{s', r} p(s', r \mid s, a) \left[ r + \gamma \max_{a'} q^*(s', a') \right]
+\end{align*}\]</span>
+</section>
+<section id="the-optimal-policy" class="slide level2">
+<h2>The Optimal Policy</h2>
+<p><br>
+</p>
+<ul>
+<li>Once we have <span class="math inline">\(v^*\)</span> , it’s easy to find the optimal policy (greedy with respect to the optimal evaluation function <span class="math inline">\(v^*\)</span>.</li>
+</ul>
+<p><br>
+</p>
+<ul>
+<li>It’s even easier if we have <span class="math inline">\(q^*\)</span> because we just take the max without even having to do the one-step lookahead (i.e using the environment’s dynamics which we often do not have)</li>
+</ul>
 </section>
 <section id="value-iteration" class="slide level2">
 <h2>Value Iteration</h2>
@@ -451,9 +456,27 @@ v_{\pi}(s) &amp; \doteq \mathbb{E}[G_t | S_t = s] \\
 <li><p>Off policy: able to improve the policy without generating new samples from that policy</p></li>
 <li><p>On policy: each time the policy is changed, even a little bit, we need to generate new samples</p></li>
 </ul>
-<p><img data-src="https://braindump.jethro.dev/ox-hugo/screenshot2019-12-16_01-35-50_.png"></p>
-<p><img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/CLAIR_logo.png?raw=true" class="slide-logo"></p>
-<div class="footer footer-default">
+
+<img data-src="https://braindump.jethro.dev/ox-hugo/screenshot2019-12-16_01-35-50_.png" class="r-stretch"></section>
+<section id="bellman-operator" class="slide level2">
+<h2>Bellman Operator</h2>
+<p>The Bellman operator <span class="math inline">\(\mathcal{T}\)</span> defines the recursive relationship for value functions in MDPs.</p>
+<p><br>
+</p>
+<p><strong>For a given policy <span class="math inline">\(\pi\)</span>:</strong></p>
+<span class="math display">\[\begin{align}
+
+(\mathcal{T}^{\pi} v)(s) = \sum_{a} \pi(a|s) \sum_{s', r} p(s', r|s, a) \left[ r + \gamma v(s') \right]
+
+\end{align}\]</span>
+<p><strong>For the optimal value function <span class="math inline">\(v^*\)</span>:</strong></p>
+<span class="math display">\[\begin{align}
+
+(\mathcal{T} v)(s) = \max_{a} \sum_{s', r} p(s', r|s, a) \left[ r + \gamma v(s') \right]
+
+\end{align}\]</span>
+
+<img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/CLAIR_logo.png?raw=true" class="slide-logo r-stretch"><div class="footer footer-default">
 
 </div>
 </section>
