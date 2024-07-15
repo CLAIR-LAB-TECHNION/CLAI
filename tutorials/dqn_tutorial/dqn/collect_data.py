@@ -3,8 +3,8 @@ import numpy as np
 import torch as th
 from gymnasium import spaces
 
-from dqn_tutorial.dqn.q_network import QNetwork
-from dqn_tutorial.dqn.replay_buffer import ReplayBuffer
+from dqn.q_network import QNetwork
+from dqn.replay_buffer import ReplayBuffer
 
 
 def epsilon_greedy_action_selection(

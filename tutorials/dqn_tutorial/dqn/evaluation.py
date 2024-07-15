@@ -6,8 +6,8 @@ import numpy as np
 from gymnasium import spaces
 from gymnasium.wrappers.monitoring.video_recorder import VideoRecorder
 
-from dqn_tutorial.dqn.collect_data import epsilon_greedy_action_selection
-from dqn_tutorial.dqn.q_network import QNetwork
+from dqn.collect_data import epsilon_greedy_action_selection
+from dqn.q_network import QNetwork
 
 
 def evaluate_policy(
