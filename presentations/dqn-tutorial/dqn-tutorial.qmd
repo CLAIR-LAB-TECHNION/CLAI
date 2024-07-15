@@ -1,0 +1,38 @@
+---
+title: "From Tabular Q-Learning to DQN"
+author: "Itay Segev"
+date: "12.07.2024"
+format: revealjs
+css: 
+  - dist/reset.css
+  - dist/reveal.css
+  - dist/theme/white.css
+  - css/dlr.css
+  - css/flexboxgrid.min.css
+highlight-style: atom-one-dark
+background-image: images/bg_image.jpg
+---
+
+# From Tabular Q-Learning to DQN
+
+**Antonin RAFFIN**  
+German Aerospace Center (DLR)  
+[Twitter: @araffin2](https://twitter.com/araffin2)  
+[https://araffin.github.io/](https://araffin.github.io/)
+
+![DQN cover](images/q_learning/dqn_pirate_cover.png)
+
+---
+
+## GitHub Repository
+
+[https://github.com/araffin/rlss23-dqn-tutorial](https://github.com/araffin/rlss23-dqn-tutorial)
+
+---
+
+## Outline
+
+1. RL 101 refresher
+2. Tabular Q-Learning
+3. RL as a regression problem (Fitted Q Iteration)
+4. From FQI to Deep Q-Network (DQN)
