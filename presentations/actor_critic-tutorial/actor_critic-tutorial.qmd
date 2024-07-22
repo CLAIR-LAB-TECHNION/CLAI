@@ -1,0 +1,220 @@
+---
+title: "Actor Critic Methods"
+subtitle: "CLAI Tutorial 8"
+author: "Itay Segev"
+format:
+  revealjs: 
+    slide-number: true
+    chalkboard: 
+      buttons: false
+    preview-links: auto
+    css: style.css  
+
+--- 
+
+## Outline
+
+-   Policy Gradient Recap
+-   Variance in Policy Gradient
+-   Reward-To-Go
+-   Baselines
+-   Actor Critic Methods
+ 
+## Value Based Recap
+
+
+![The anatomy of value based algorithm](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/tut06_Value_based_anatomy.png?raw=true)
+
+## Policy Gradient Recap
+
+![The anatomy of policy gradient algorithm](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/tut04_pg_scheme.png?raw=true)
+
+## Objective
+
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/tut04_pg_one_tj.png?raw=true)
+
+## REINFORCE Algorithm
+
+1. Initialize policy parameters $\theta$
+2. For each episode:
+    - Sample a trajectory $\tau$ by running the policy $\pi_{\theta}$
+    - Compute the cumulative reward $R(\tau)$
+    - Compute the gradient estimate $\hat{g} = \sum_{t=1}^{T} \nabla_{\theta} \log \pi_{\theta}(a_t \mid s_t) R(\tau)$
+    - Update the policy parameters: $\theta \leftarrow \theta + \alpha \hat{g}$
+
+
+## Challenges in Policy Gradient
+
+- Sample Inefficency
+- High Variance
+
+## Varience in Policy Gradient
+
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/tut04_pg_issues.png?raw=true)
+
+## Causality
+
+- **Causality**  states that actions in the present cannot change rewards received in the past.
+
+- $$ \nabla_{\theta} J(\theta) = \mathbb{E}_{\tau \sim P_{\theta}(\tau)} \left[ \sum_{t=1}^{T} \nabla_{\theta} \log \pi_{\theta}(a_t \mid s_t) \sum_{t'=t}^{T} R(s_{t'}, a_{t'}) \right] $$
+
+
+
+## Reward-To-Go
+
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/AC_Q_hat.png?raw=true)
+
+## Actor Critic
+
+![](https://ars.els-cdn.com/content/image/1-s2.0-S0191261520303829-gr3.jpg)
+
+## Actor Update 
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/step4.jpg)
+
+## Critic Update 
+
+![](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/step5.jpg)
+
+## Actor Critic 
+
+![](https://miro.medium.com/v2/resize:fit:1400/1*BVh9xq3VYEsgz6eNB3F6cA.png)
+
+
+## Intuition Behind Baselines
+
+- $\hat{g} = \sum_{t=1}^{T} \nabla_{\theta} \log \pi_{\theta}(a_t \mid s_t) (R(\tau) -b)$
+
+- With a baseline, the probability is incremented only if $R(\tau) - b$ is positive and decremented if it is negative.
+
+
+---
+
+## Baseline Expression
+
+- The optimal baseline expression is the expected return over trajectories weighted by gradient magnitudes:
+  ```{=tex}
+  \begin{align*}
+  b(s_{t}) = \frac{\sum_{t=0}^{T} \nabla_{\theta} \log \pi_{\theta}(a_{t} \mid s_{t}) R_{t}}{\sum_{t=0}^{T} \nabla_{\theta} \log \pi_{\theta}(a_{t} \mid s_{t})}
+  \end{align*}
+  ```
+
+- In practice, the average return is often used as a baseline:
+  ```{=tex}
+  \begin{align*}
+  b = \frac{1}{N} \sum_{i=1}^{N} R(\tau_{i})
+  \end{align*}
+  ```
+
+---
+
+## Baseline Expression
+- In the case of Q actor critic:
+  ```{=tex}
+  \begin{align*}
+  b = \frac{1}{N} \sum_{i=1}^{N} Q(s_{i,t},a_{i,t})
+  \end{align*}
+  ```
+  ```{=tex}
+  \begin{align*}
+  V(s_t) &= \mathbb{E}_{a_t \sim \pi_{\theta}(a_t|s_t)} \left[ Q_{\pi}(s_t, a_t) \right]
+
+  \end{align*}
+  ```
+---
+
+## Baseline Expression
+
+- Another commonly used baseline expression is the state-value function $V(s_{t})$.  
+
+  ```{=tex}
+  \begin{align*}
+  b(s_{t}) = V(s_{t})
+  \end{align*}
+  ```
+
+- Mathematically, the policy gradient with a baseline $b$ is given by:
+```{=tex}
+\begin{align*}
+\nabla J(\theta) = E_{\tau \sim \pi_{\theta}} \left[ \sum_{t=0}^{T} \nabla_{\theta} \log \pi_{\theta}(a_{t} \mid s_{t}) \left( Q_{\pi}(s_{t}, a_{t}) - V(s_{t}) \right) \right] 
+\end{align*}
+  ```
+
+---
+
+## Advantage Function
+
+The advantage function, $A_{\pi}(s_{t}, a_{t})$, is defined as the difference between the Q function and the value function:
+$$ A_{\pi}(s_{t}, a_{t}) = Q_{\pi}(s_{t}, a_{t}) - V_{\pi}(s_{t}) $$
+
+It represents how much better the action $a_{t}$ is compared to the average performance of your policy $\pi$ in state $s_{t}$.
+
+---
+
+## Bias and Variance
+
+- **Variance Reduction**: Baselines reduce variance by centering the returns, making the learning process more stable.
+- **No Bias Introduction**: Properly chosen baselines do not introduce bias to the policy gradient.
+- **Trade-Off**: Using an approximate baseline (like an estimated $V(s_t)$) might introduce slight bias, but the variance reduction often outweighs this.
+
+---
+
+## Varience in Policy Gradient - Graphs
+
+![Gradients Variance With vs Without Baselines](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/AC_grad_var.png?raw=true)
+
+
+## Policy Evaluation Techniques
+
+- We have three possible quantities to fit: $Q$, $V$, or $A$.
+- Ultimately, we want $A$, but the question is which of these three should we fit and what should we fit it to.
+
+---
+
+## Policy Evaluation Techniques 
+
+- Q function can be written as:
+  ```{=tex}
+  \begin{align*}
+  Q_{\pi}(s_{t}, a_{t}) = R(s_{t}, a_{t}) + \gamma V_{\pi}(s_{t+1})
+  \end{align*}
+   ```
+
+- And the advantage function as: $$A_{\pi}(s_{t}, a_{t}) \approx R(s_{t}, a_{t}) + \gamma V_{\pi}(s_{t+1}) - V_{\pi}(s_{t})$$
+
+- We often prefer to fit $V_{\pi}(s)$ due to its simplicity and the fact that it requires fewer samples to estimate accurately.
+
+## Evaluating $V_{\pi}(s)$: Monte Carlo
+
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/AC_Monte_Carlo.png?raw=true)
+
+## Evaluating $V_{\pi}(s)$: TD Methods
+ 
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/AC_TD.png?raw=true)
+
+## Actor Critic Methods
+
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/AC_anatomy.png?raw=true)
+
+## Online Actor Critic
+
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/AC_online_algorithm.png?raw=true)
+
+
+## Backup Slides
+
+## Architecture Design 
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/AC_ArchitectureDesign.png?raw=true)
+
+
+## Actor Critic with Replay Buffer 
+
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/AC_with_replay_buffer.png?raw=true)
+
+##  Fixing the value function
+
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/AC_fix_value_function.png?raw=true)   
+
+## Fixing the policy update
+
+![](https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/AC_fix_policy_update.png?raw=true)
