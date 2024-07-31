@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Model-Based RL</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/white.css" id="theme">
+		<!-- Add DLR logo -->
+		<link rel="stylesheet" href="css/dlr.css">
+		<!-- Grid system: http://flexboxgrid.com/ -->
+		<link rel="stylesheet" href="css/flexboxgrid.min.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<!-- <link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme"> -->
+		<link rel="stylesheet" href="plugin/highlight/atom-one-dark.css" id="highlight-theme">
+	</head>
+	<body>
+		<div class="side-block">
+		</div>
+		<div class="reveal">
+			<div class="slides">
+				
+				<section data-background-image="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/presentations/dqn-tutorial/images/bg_image.jpg?raw=true">													
+					<h3 id='main-title'>Model-Based RL</h3>															
+						<div>
+							Itay Segev 
+							<br>
+							<span class="italic">CLAI Tutorial 9</span><br>
+						</div>
+				</section>
+
+
+				<section>
+					<h4>Outline</h4>
+					<ol class="medium-text">
+						<li>Why Learn a Model</li>
+						<li>MPC</li>
+						<li>Model-Based Policy Learning</li>
+						<li>Model-free optimization with a model</li>
+						<li>Dyna</li>
+					</ol>
+				</section>
+
+				
+				<section>
+					<h3>Why Learn a Model?</h3>
+				   <ul class="medium-text">
+					   <li><span class="fragment">Efficiency</span> <span class="fragment">→</span> <span class="fragment">Can simulate interactions internally</span></li>
+					   <li><span class="fragment">Control and Planning</span> <span class="fragment">→</span> <span class="fragment">More informed decision-making and the ability to foresee and avoid potential pitfalls.</span></li>
+					   <li><span class="fragment">Flexibility</span> <span class="fragment">→</span> <span class="fragment">Models enable the agent to adapt to changes in the environment by reusing the learned model for different tasks</span></li>
+				   </ul>
+				</section>
+
+
+				<section>
+					<img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/MB_model-based-0.5.png?raw=true">
+			    </section>
+
+				   
+				<section>
+					<h4>Does it work?</h4>
+				   <img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/MB_dist_shift_example.png?raw=true">
+			    </section>
+
+
+				<section>
+					<h4>Can we do better?</h4>
+				   <img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/MB_model-based-1.0.png?raw=true">
+			    </section>
+
+
+				<section>
+					<h4>Can we do better?</h4>
+				   <img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/MB_model-based-1.5.png?raw=true" >
+			    </section>
+
+
+				<section>
+					<h4>The stochastic open-loop case</h4>
+				   <img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/MB_stoch_open_loop.png?raw=true">
+			    </section>
+
+
+				<section>
+					<h4>The stochastic closed-loop case</h4>
+				   <img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/MB_closed_loop.png?raw=true" alt="discrete state" style="max-width:80%;">
+			    </section>
+
+
+				<section>
+					<h3>Backpropagate directly into the policy?</h3>
+					<img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/MB_backprop_problem.png?raw=true">
+					<img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/MB_model-based_with_backprop.png?raw=true">
+				</section>
+
+
+				<section>
+					<h4>Model-Free Learning With a Model</h4>
+				   <img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/MB_model-based_pg.png?raw=true" alt="discrete state" style="max-width:80%;">
+			    </section>
+
+
+				<section>
+					<h4>Challenges</h4>
+				   <ul>
+					   <li class="fragment">Model Accuracy</li>
+					   <li class="fragment">Exploration</li>
+				   </ul>
+				</section>
+
+
+				<section>
+					<h4>The curse of long model-based rollouts</h4>
+				   <img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/MB_curse_of_long_rollouts.png?raw=true" alt="discrete state" style="max-width:80%;">
+			    </section>
+
+				<section>
+					<h4>How to get away with short rollouts?</h4>
+				   <img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/MB_short_rollouts.png?raw=true" alt="discrete state" style="max-width:80%;">
+			    </section>
+
+				<section>
+					<h4>Model-based RL with short rollouts</h4>
+				   <img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/MB_model-based_3.0.png?raw=true" alt="discrete state" style="max-width:80%;">
+			    </section>
+
+				<section>
+					<h4>Model-free optimization with a model</h4>
+				   <img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/MB_dyna.png?raw=true" alt="discrete state" style="max-width:80%;">
+			    </section>
+
+				<section>
+					<h4>General “Dyna-style” model-based RL recipe</h4>
+				   <img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/MB_general_dyna.png?raw=true" alt="discrete state" style="max-width:80%;">
+			    </section>
+
+				<section>
+					<h4>Model-accelerated off-policy RL</h4>
+				   <img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/MB_model-accelerated%20off-policy.png?raw=true" alt="discrete state" style="max-width:80%;">
+			    </section>
+
+				 
+
+				
+			<section>
+				<h2>Backup Slides</h2>
+			</section>
+
+				
+
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script src="plugin/math/math.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				// Display the page number of the current slide
+				slideNumber: true,
+
+				// Add the current slide number to the URL hash so that reloading the
+				// page/copying the URL will return you to the same slide
+				hash: true,
+
+				// Push each slide change to the browser history. Implies `hash: true`
+				// history: false,
+
+				// math: {
+				// 	mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+				// 	config: 'TeX-AMS_HTML-full'  // See http://docs.mathjax.org/en/latest/config-files.html
+				// 	// pass other options into `MathJax.Hub.Config()`
+				// 	// TeX: { Macros: macros }
+				// },
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX]
+			});
+		</script>
+	</body>
+</html>
