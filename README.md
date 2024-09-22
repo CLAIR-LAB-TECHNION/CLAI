@@ -1,8 +1,8 @@
-# CLAI
+# SDMRL
 
 <h1 align="center">
   <br>
-Technion Collaborative AI (Spring 2024)
+Technion Sequential Decision Making and Reinforcement Learning (Fall 2024-2025)
   <br>
   <br>
   <img src="https://github.com/CLAIR-LAB-TECHNION/CLAI/blob/main/tutorials/assets/CLAI_logo.png?raw=true">
@@ -12,10 +12,10 @@ Technion Collaborative AI (Spring 2024)
 
   <p align="center">
     <a href="mailto:itaysegev@campus.technion.ac.il">Itay Segev</a> •
-    <a href="mailto:eandrey@campus.technion.ac.il">Andrey Elashkin</a>
+    <a href="mailto:yuval.goshen@campus.technion.ac.il">Yuval Goshen</a>
   </p>
 
-Jupyter Notebook tutorials for the Technion's CS 236203 course Collaborative AI
+Jupyter Notebook tutorials for the Technion's CS 236018 course Sequential Decision Making and Reinforcement Learning
 
 <h4 align="center">
     <a href="https://colab.research.google.com/github/CLAIR-LAB-TECHNION/CLAI"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
